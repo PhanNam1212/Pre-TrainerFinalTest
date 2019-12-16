@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        table {
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+    </style>
+</head>
+<body>
+<input type="text" id="m" placeholder="cot">
+<input type="text" id="n" placeholder="dong">
+<button type="button" onclick="createTable();">add </button>
+<br>
+
+<table id="myTable">
+
+</table>
+<script type="text/javascript">
+    var n = 0;
+    var m = 0;
+    var currentRow = 0;
+    var grid = document.getElementById("myTable");
+    function createTable(){
+        n = document.getElementById("n").value;
+        m = document.getElementById("m").value;
+        var htmlHeader = "<tr>";
+        for (var i = 0; i < n; i++) {
+            htmlHeader += "<th>"+(i+1)+"</th>";
+        }
+        grid.innerHTML = htmlHeader + "</tr>";
+        appendTable();
+    }
+
+    function appendTable(){
+        var start = currentRow;
+        for (currentRow = start; currentRow < m && currentRow < start +100; currentRow++) {
+            var htmlHeader = "<tr>";
+            for (var i = 0; i < n; i++) {
+                htmlHeader += "<td onclick='sortTable("+i+")'>"+Math.floor((Math.random() * 1000))+"</td>";
+            }
+            grid.innerHTML += htmlHeader + "</tr>";
+        }
+
+    }
+
+    window.onscroll = function(ev) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            var delayInMilliseconds = 3000; //đợi 3s sẽ tự load ra thêm 100 cái
+            setTimeout(function() {
+            }, delayInMilliseconds);
+            appendTable();
+        }
+    };
+
+
+    function sortTable(col) {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("myTable");
+        switching = true;
+
+        while (switching) {
+
+            switching = false;
+            rows = table.rows;
+
+            for (i = 1; i < (rows.length - 1); i++) {
+
+                shouldSwitch = false;
+
+                x = rows[i].getElementsByTagName("TD")[col];
+                y = rows[i + 1].getElementsByTagName("TD")[col];
+
+                if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
+
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+
+    }
+</script>
+</body>
+</html>
